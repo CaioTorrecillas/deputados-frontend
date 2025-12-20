@@ -15,6 +15,17 @@ class DeputadosService {
 
         return response.json();
     }
+    async getDeputadoById(id: string): Promise<any> {
+        const response = await fetch(`${this.URL}/deputados/${id}`, {
+            cache: "no-store"
+        });
+
+        if (!response.ok) {
+            throw new Error("Erro ao buscar deputados");
+        }
+
+        return response.json();
+    }
 }
 
 export const deputadosService = new DeputadosService();

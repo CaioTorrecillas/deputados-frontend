@@ -30,7 +30,7 @@ export default function LoginPage() {
 
     console.log("Resultado: " + response.status);
     if (response.status == 200) {
-      router.push("home");
+      router.push("/protected/home");
 
     }
 
@@ -55,7 +55,7 @@ export default function LoginPage() {
         </div>
 
         <div className="mb-6">
-          <label className="block text-gray-700">Senha</label>
+          <label className="block text-gray-700">Email</label>
           <input
             {...register("password")}
             type="password"

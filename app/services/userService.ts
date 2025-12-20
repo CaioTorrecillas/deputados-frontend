@@ -31,6 +31,75 @@ class UserService {
 
         return response.json();
     }
+    async favoriteDeputado(token: string, deputadoId: string, userId: string) {
+
+        console.log(deputadoId)
+        const response = await fetch(`${this.URL}/users/${userId}/favorites/${deputadoId}`, {
+            cache: "no-store",
+            method: "POST",
+            headers: {
+
+                Authorization: `Bearer ${token}`
+            },
+
+        });
+        console.log("USERS SERVICE - TOKEN:", token);
+        console.log("USERS SERVICE - RESPONSE: " + response.status);
+        console.log("USERS SERVICE - AUTH HEADER:", `Bearer ${token}`);
+        console.log(response)
+        const text = await response.text();
+        console.log(text);
+        const data = text ? JSON.parse(text) : null;
+
+        return {
+            status: response.status,
+            data,
+        };
+    }
+    async getUser(token: string) {
+
+        const response = await fetch(`${this.URL}/users/me`, {
+            cache: "no-store",
+            method: "GET",
+            headers: {
+
+                Authorization: `Bearer ${token}`
+            },
+
+        });
+        console.log("USERS SERVICE getUser - RESPONSE: " + response.status);
+        console.log("USERS SERVICE getUser - AUTH HEADER:", `Bearer ${token}`);
+        console.log(response)
+        const data = await response.json();
+
+        return {
+            status: response.status,
+            data,
+        };
+    }
+
+    async getAllFavoriteDeputados(userId: string, token: string) {
+
+        const response = await fetch(`${this.URL}/users/${userId}/favorites`, {
+            cache: "no-store",
+            method: "GET",
+            headers: {
+
+                Authorization: `Bearer ${token}`
+            },
+
+        });
+
+        console.log("USERS SERVICE getAllFavoriteDeputados - RESPONSE: " + response.status);
+        console.log("USERS SERVICE getAllFavoriteDeputados - AUTH HEADER:", `Bearer ${token}`);
+        console.log(response)
+        const data = response.ok ? await response.json() : null;
+
+        return {
+            status: response.status,
+            data,
+        };
+    }
 }
 
 export const userService = new UserService();

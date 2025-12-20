@@ -6,7 +6,7 @@ export default function Navbar() {
 
                 <ul className="flex space-x-6">
                     <li>
-                        <a href="/home" className="hover:underline">
+                        <a href="/protected/home" className="hover:underline">
                             Home
                         </a>
                     </li>

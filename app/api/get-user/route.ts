@@ -1,26 +1,16 @@
 import { NextResponse } from "next/server";
 import { loginService } from "@/app/services/loginService";
-import { userService } from "@/app/services/userService";
 
 export async function POST(request: Request) {
     try {
         const body = await request.json();
 
         const result = await loginService.login(body.email, body.password);
-
-        if (result.error || !result.accessToken) {
+        if (result.error) {
             return NextResponse.json({ error: result.error }, { status: 401 });
         }
-
-
-        const userResult = await userService.getUser(result.accessToken!);
-
-        if (userResult.status !== 200 || !userResult.data) {
-            return NextResponse.json({ error: "Erro ao buscar usuário" }, { status: 401 });
-        }
-        const user = userResult.data;
+        // Cria resposta com cookie HttpOnly
         const response = NextResponse.json({ message: "Login bem-sucedido" });
-
         response.cookies.set({
             name: "accessToken",
             value: result.accessToken!,
@@ -29,16 +19,8 @@ export async function POST(request: Request) {
             secure: process.env.NODE_ENV === "production",
             maxAge: 60 * 60, // 1 hora
         });
-
-        response.cookies.set("userId", String(user.id), {
-            path: "/",
-            maxAge: 60 * 60,
-        });
-
-
-
+        console.log(response);
         return response;
-
     } catch (error) {
         console.log(error);
 

@@ -75,6 +75,7 @@ export default function DeputadosPage() {
                         {deputadosFiltrados.map((dep) => (
                             <DeputadosCard
                                 key={dep.id}
+                                id={dep.id}
                                 nome={dep.nome}
                                 siglaPartido={dep.siglaPartido}
                                 siglaUf={dep.siglaUf}

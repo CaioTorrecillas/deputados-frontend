@@ -7,7 +7,7 @@ type FormData = {
 };
 
 export default function HomePage() {
-
+    console.log("[HOME - PAGE] - Carregando Home page")
 
 
     return (
