@@ -15,6 +15,20 @@ class DeputadosService {
 
         return response.json();
     }
+
+    async getDespesasById(id: string): Promise<any> {
+        const response = await fetch(`${this.URL}/deputados/${id}/despesas`, {
+
+            cache: "no-store"
+        });
+        console.log("service" + response)
+        if (!response.ok) {
+            throw new Error("Erro ao buscar despesas do deputado");
+        }
+
+        return response.json();
+    }
+
     async getDeputadoById(id: string): Promise<any> {
         const response = await fetch(`${this.URL}/deputados/${id}`, {
             cache: "no-store"

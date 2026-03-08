@@ -56,6 +56,31 @@ class UserService {
             data,
         };
     }
+    async removeFavoriteDeputado(token: string, deputadoId: string, userId: string) {
+
+        console.log(deputadoId)
+        const response = await fetch(`${this.URL}/users/${userId}/favorites/${deputadoId}`, {
+            cache: "no-store",
+            method: "DELETE",
+            headers: {
+
+                Authorization: `Bearer ${token}`
+            },
+
+        });
+        console.log("USERS SERVICE - TOKEN:", token);
+        console.log("USERS SERVICE - RESPONSE: " + response.status);
+        console.log("USERS SERVICE - AUTH HEADER:", `Bearer ${token}`);
+        console.log(response)
+        const text = await response.text();
+        console.log(text);
+        const data = text ? JSON.parse(text) : null;
+
+        return {
+            status: response.status,
+            data,
+        };
+    }
     async getUser(token: string) {
 
         const response = await fetch(`${this.URL}/users/me`, {

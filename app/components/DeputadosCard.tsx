@@ -1,32 +1,38 @@
 "use client";
-import { DeputadoCard } from "@/app/models/DeputadoCard";
+import { DeputadoCard as DeputadoCardModel } from "@/app/models/DeputadoCard";
 import Navbar from "@/app/components/Navbar";
 import { Star } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+
+type DeputadosCardProps = DeputadoCardModel & {
+    onFavoriteResult?: (success: boolean, message?: string) => void;
+
+};
 export default function DeputadosCard({
     id,
     nome,
     siglaPartido,
     siglaUf,
-    urlFoto
-}: DeputadoCard) {
+    urlFoto,
+    onFavoriteResult
+}: DeputadosCardProps) {
     const router = useRouter();
 
     async function favoritarDeputado() {
+        try {
+            const response = await fetch(`/api/users/favorite/${id}`, {
+                method: "POST",
+            });
 
-        const response = await fetch(`/api/users/favorite/${id}`, {
-            method: "POST"
-        });
+            if (!response.ok) {
+                throw new Error();
+            }
 
-        if (!response.ok) {
-            alert("Erro ao favoritar deputado");
-            return;
+            onFavoriteResult?.(true, "Deputado favoritado com sucesso");
+        } catch (error) {
+            onFavoriteResult?.(false, "Erro ao favoritar deputado");
         }
-
-        const data = await response.json();
-        console.log(data.message);
-
     }
 
     function navegarDeputadoDetalhe() {
@@ -40,7 +46,7 @@ export default function DeputadosCard({
             <button
                 className="absolute top-3 right-3 text-gray-400 hover:text-yellow-400 transition"
                 title="Favoritar deputado"
-                onClick={() => favoritarDeputado()}
+                onClick={favoritarDeputado}
             >
                 <Star className="w-6 h-6" />
             </button>
@@ -65,7 +71,8 @@ export default function DeputadosCard({
 
             {/* Botão embaixo */}
             <button
-                className="mt-4 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition" onClick={navegarDeputadoDetalhe}
+                className="mt-4 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+                onClick={navegarDeputadoDetalhe}
 
             >
                 Ver detalhes

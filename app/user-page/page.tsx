@@ -1,5 +1,6 @@
 "use client";
 import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
 import { useEffect, useState } from "react";
 import DeputadosCard from "@/app/components/DeputadosCard";
 import { Deputado } from "@/app/models/Deputado";
@@ -55,34 +56,41 @@ export default function UserPage() {
             <div className="mt-24 px-6 flex justify-center">
 
                 <div className="max-w-5xl w-full bg-white/80 p-6 rounded-lg shadow-lg">
-                    <h1 className="text-2xl font-bold mb-6">Nome: {user?.nome}</h1>
-                    <h1 className="text-2xl font-bold mb-6">Sobrenome: {user?.sobrenome}</h1>
-                    <h1 className="text-2xl font-bold mb-6">Email: {user?.email}</h1>
-                    <h1 className="text-2xl font-bold mb-6">Estado: {user?.estado}</h1>
-                    <h1 className="text-2xl font-bold mb-6">Cidade: {user?.cidade}</h1>
-                    <h1 className="text-2xl font-bold mb-6">CPF: {user?.cpf}</h1>
+                    <div className="max-w-5xl w-full bg-white/80 p-6 rounded-lg shadow-lg">
+                        <h1 className="text-4xl font-bold mb-6 text-center"> Informações do Usuário</h1>
+                        <h1 className="text-2xl  mb-6">Nome: {user?.nome}</h1>
+                        <h1 className="text-2xl  mb-6">Sobrenome: {user?.sobrenome}</h1>
+                        <h1 className="text-2xl mb-6">Email: {user?.email}</h1>
+                        <h1 className="text-2xl  mb-6">Estado: {user?.estado}</h1>
+                        <h1 className="text-2xl  mb-6">Cidade: {user?.cidade}</h1>
+                        <h1 className="text-2xl mb-6">CPF: {user?.cpf}</h1>
+                    </div>
 
+                    <div className="max-w-5xl w-full bg-white/80 p-6 rounded-lg shadow-lg">
 
+                        <h1 className="text-4xl font-bold mb-6 text-center"> Deputados que estão nos favoritos</h1>
 
-                    <h1 className="text-2xl font-bold mb-6">Deputados que estão nos favoritos:</h1>
+                        {/* 🟦 Grid dos deputados */}
+                        <div className="flex flex-col gap-6">
+                            {favorites.map((dep) => (
+                                <DeputadosCard
+                                    key={dep.id}
+                                    id={dep.id}
+                                    nome={dep.ultimoStatus.nome}
+                                    siglaPartido={dep.ultimoStatus.siglaPartido}
+                                    siglaUf={dep.ultimoStatus.siglaUf}
+                                    urlFoto={dep.ultimoStatus.urlFoto ?? ""}
 
-                    {/* 🟦 Grid dos deputados */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        {favorites.map((dep) => (
-                            <DeputadosCard
-                                key={dep.id}
-                                id={dep.id}
-                                nome={dep.ultimoStatus.nome}
-                                siglaPartido={dep.ultimoStatus.siglaPartido}
-                                siglaUf={dep.ultimoStatus.siglaUf}
-                                urlFoto={dep.ultimoStatus.urlFoto ?? ""}
-                            />
-                        ))}
+                                />
+                            ))}
+                        </div>
                     </div>
 
 
                 </div>
             </div>
+            <Footer />
+
         </>
 
     );

@@ -4,13 +4,19 @@ import { GET } from "@/app/api/deputados/route";
 import { Deputado } from "@/app/models/Deputado";
 import { useEffect } from "react";
 import Navbar from "@/app/components/Navbar";
+import Modal from "@/app/components/Modal";
 import DeputadosCard from "@/app/components/DeputadosCard";
+import Footer from "@/app/components/Footer";
 
 
 export default function DeputadosPage() {
     const [deputados, setDeputados] = useState<Deputado[]>([]);
     const [filtroNome, setFiltroNome] = useState("");
     const [filtroUF, setFiltroUF] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
+    const [modalType, setModalType] = useState<"success" | "error">("success");
+    const [filtroPartido, setFiltroPartido] = useState("");
 
     useEffect(() => {
         async function carregar() {
@@ -19,6 +25,7 @@ export default function DeputadosPage() {
                 const data = await response.json();
                 setDeputados(data.dados);
                 console.log(data);
+
             } catch (error) {
                 console.error("Erro:", error);
             } finally {
@@ -32,8 +39,22 @@ export default function DeputadosPage() {
     const deputadosFiltrados = deputados.filter((dep) => {
         const nomeOK = dep.nome.toLowerCase().includes(filtroNome.toLowerCase());
         const ufOK = filtroUF === "" || dep.siglaUf === filtroUF;
-        return nomeOK && ufOK;
+        const partidoOK = filtroPartido === "" || dep.siglaPartido === filtroPartido;
+
+        return nomeOK && ufOK && partidoOK;
     });
+
+    function handleFavoriteResult(success: boolean, message?: string) {
+        setModalMessage(
+            message ??
+            (success
+                ? "Deputado favoritado com sucesso ⭐"
+                : "Erro ao favoritar deputado ❌")
+        );
+
+        setModalType(success ? "success" : "error");
+        setModalOpen(true);
+    }
     return (
         <>
             <Navbar />
@@ -68,6 +89,20 @@ export default function DeputadosPage() {
                                 <option key={uf} value={uf}>{uf}</option>
                             ))}
                         </select>
+                        <select
+                            value={filtroPartido}
+                            onChange={(e) => setFiltroPartido(e.target.value)}
+                            className="p-2 border rounded w-40"
+                        >
+                            <option value="">Todos os Partidos</option>
+                            {Array.from(new Set(deputados.map((d) => d.siglaPartido)))
+                                .sort()
+                                .map((partido) => (
+                                    <option key={partido} value={partido}>
+                                        {partido}
+                                    </option>
+                                ))}
+                        </select>
                     </div>
 
                     {/* 🟦 Grid dos deputados */}
@@ -80,11 +115,22 @@ export default function DeputadosPage() {
                                 siglaPartido={dep.siglaPartido}
                                 siglaUf={dep.siglaUf}
                                 urlFoto={dep.urlFoto ?? ""}
+                                onFavoriteResult={handleFavoriteResult}
+
                             />
                         ))}
                     </div>
+                    <Modal
+                        open={modalOpen}
+                        title="Ação concluída"
+                        message={modalMessage}
+                        type={modalType}
+                        onClose={() => setModalOpen(false)}
+                    />
                 </div>
             </div>
+            <Footer />
+
         </>
     )
 
