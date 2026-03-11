@@ -42,16 +42,19 @@ class ProposicaoService {
         // Se quiser, você pode já extrair apenas a lista de proposições:
         return data;
     }
-    async getProposicaoPorIdDeputado(id: string): Promise<any[]> {
+    async getProposicaoPorIdDeputado(id: string, pagina: number): Promise<any[]> {
         const response = await fetch(
-            `${this.URL}/proposicao/${id}/proposicoes`,
-            { cache: "no-store" });
+            `${this.URL}/proposicao/${id}/proposicoes?pagina=${pagina}`,
+            { cache: "no-store" }
+        );
+
         if (!response.ok) {
-            throw new Error(`Erro ao buscar detalhe da proposicao por id de deputado: ${response.statusText}`);
+            throw new Error(
+                `Erro ao buscar detalhe da proposicao por id de deputado: ${response.statusText}`
+            );
         }
 
         const data = await response.json();
-        // Se quiser, você pode já extrair apenas a lista de proposições:
         return data;
     }
 

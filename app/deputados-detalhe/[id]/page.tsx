@@ -11,10 +11,55 @@ import {
     YAxis,
     Tooltip,
     ResponsiveContainer,
-    CartesianGrid
+    CartesianGrid,
+    Cell
 } from "recharts";
 
+const coresTipos = {
 
+    // Projetos legislativos
+    PL: "#2563eb",
+    PEC: "#1d4ed8",
+    PLV: "#3b82f6",
+    PRC: "#60a5fa",
+
+    // Emendas
+    EMC: "#16a34a",
+    EMP: "#22c55e",
+    EMA: "#4ade80",
+    EMR: "#15803d",
+
+    // Requerimentos / solicitações
+    REQ: "#f59e0b",
+    RIC: "#fbbf24",
+    RCP: "#f97316",
+    REC: "#fb923c",
+    RAT: "#fdba74",
+    RPD: "#ea580c",
+    RDF: "#fed7aa",
+
+    // Relatórios / pareceres
+    PRL: "#9333ea",
+    PRLE: "#a855f7",
+    PRLP: "#c084fc",
+
+    // Substitutivos / destaques
+    SBT: "#8b5cf6",
+    DTQ: "#7c3aed",
+
+    // Outros tipos
+    DOC: "#6b7280",
+    PPR: "#9ca3af",
+    PPP: "#4b5563",
+    SLD: "#374151",
+    PEP: "#64748b",
+    PROC: "#94a3b8",
+    SSP: "#475569",
+    INC: "#334155",
+    CVO: "#1f2937",
+    ATACN: "#71717a"
+
+};
 type Deputado = {
     dataNascimento: string;
     escolaridade: string;
@@ -36,11 +81,43 @@ type Deputado = {
         };
     };
 };
-
+const significadoTipos = {
+    ATACN: "Ata da Comissão",
+    CVO: "Comunicação de voto",
+    DOC: "Documento",
+    DTQ: "Destaque para votação em separado",
+    EMA: "Emenda aditiva",
+    EMC: "Emenda de comissão",
+    EMP: "Emenda",
+    EMR: "Emenda de redação",
+    INC: "Indicação",
+    PEC: "Proposta de Emenda à Constituição",
+    PEP: "Proposta de Emenda de Plenário",
+    PL: "Projeto de Lei",
+    PLV: "Projeto de Lei de Conversão",
+    PPR: "Pedido de prorrogação",
+    PPP: "Pedido de preferência",
+    PRC: "Projeto de Resolução da Câmara",
+    PRL: "Parecer do relator",
+    PRLE: "Parecer de relator em comissão especial",
+    PRLP: "Parecer de relator em plenário",
+    PROC: "Processo",
+    RAT: "Ratificação",
+    RCP: "Requerimento de criação de CPI",
+    REC: "Recurso",
+    REQ: "Requerimento",
+    RDF: "Redação final",
+    RIC: "Requerimento de informação",
+    RPD: "Requerimento de retirada de pauta",
+    SBT: "Substitutivo",
+    SLD: "Solicitação de devolução",
+    SSP: "Subscrição de proposição"
+};
 export default function DeputadoDetalhePage() {
     const { id } = useParams();
     const tiposPrincipais = ["PL", "PEC", "PLV", "PDL"];
     const [deputado, setDeputado] = useState<Deputado | null>(null);
+    const [mostrarLegenda, setMostrarLegenda] = useState(false);
     const [modoGrafico, setModoGrafico] = useState("principais");
     const [despesas, setDespesas] = useState<any[]>([]);
     const [proposicao, setProposicao] = useState<any[]>([]);
@@ -58,26 +135,15 @@ export default function DeputadoDetalhePage() {
         async function fetchDeputado() {
             try {
                 const response = await fetch(`/api/deputados/${id}`);
-                const responseDespesas = await fetch(`/api/deputados/${id}/despesas`);
-                const responseProposicao = await fetch(`/api/proposicao/${id}/proposicoes`);
-                const responseProposicaoDadosTotais = await fetch(`/api/proposicao/${id}/proposicoes/dadosTotais`);
-
-                const dataProposicao = await responseProposicao.json();
-                const dataDespesas = await responseDespesas.json();
-                const dataProposicaoDT = await responseProposicaoDadosTotais.json();
 
 
 
 
-                setProposicaoDadosTotais(dataProposicaoDT);
 
 
 
-
-                setDespesas(dataDespesas);
-                setProposicao(dataProposicao);
                 const data = await response.json();
-                console.log(dataProposicaoDT)
+
                 setDeputado(data);
             } catch (error) {
                 console.error("Erro ao buscar deputado", error);
@@ -87,7 +153,62 @@ export default function DeputadoDetalhePage() {
         }
 
         fetchDeputado();
+    }, [id]);
+
+
+    useEffect(() => {
+        if (activeTab !== "despesas") return;
+
+        async function fetchDespesas() {
+            try {
+                const response = await fetch(`/api/deputados/${id}/despesas`);
+                const data = await response.json();
+                setDespesas(data);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        fetchDespesas();
+    }, [id, activeTab]);
+
+    useEffect(() => {
+        async function fetchDadosTotais() {
+            try {
+                const response = await fetch(
+                    `/api/proposicao/${id}/proposicoes/dadosTotais`
+                );
+
+                const data = await response.json();
+                setProposicaoDadosTotais(data);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        fetchDadosTotais();
+    }, [id]);
+
+    useEffect(() => {
+        console.log(`Mudando de pagina. Pagina:   ${paginaProposicoes}`);
+        if (activeTab !== "proposicoes") return;
+
+        async function fetchProposicoes() {
+            try {
+                const response = await fetch(
+                    `/api/proposicao/${id}/proposicoes?pagina=${paginaProposicoes}`
+                );
+
+                const data = await response.json();
+                setProposicao(data);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        fetchProposicoes();
     }, [id, paginaProposicoes, activeTab]);
+
 
     if (loading) {
         return <p className="p-6">Carregando...</p>;
@@ -98,7 +219,7 @@ export default function DeputadoDetalhePage() {
     }
 
     const { ultimoStatus } = deputado;
-    const dadosGrafico = proposicaoDadosTotais
+    const dadosGrafico = proposicaoDadosTotais?.porTipo
         ? Object.entries(proposicaoDadosTotais.porTipo).map(([tipo, valor]) => ({
             tipo,
             valor
@@ -330,38 +451,40 @@ export default function DeputadoDetalhePage() {
                         <h2 className="text-xl font-semibold mb-4">
                             Proposições do Deputado
                         </h2>
+                        <div className="max-h-[500px] overflow-y-auto border rounded p-3">
 
-                        {proposicao?.dados?.map((item) => (
-                            <div
-                                key={item.id}
-                                className="border rounded-lg p-4 mb-3 shadow-sm bg-white"
-                            >
-                                {/* Tipo da proposição */}
-                                <h3 className="font-semibold text-lg text-gray-800">
-                                    {item.siglaTipo} {item.numero}/{item.ano}
-                                </h3>
+                            {proposicao?.dados?.map((item) => (
+                                <div
+                                    key={item.id}
+                                    className="border rounded-lg p-4 mb-3 shadow-sm bg-white"
+                                >
+                                    {/* Tipo da proposição */}
+                                    <h3 className="font-semibold text-lg text-gray-800">
+                                        {item.siglaTipo} {item.numero}/{item.ano}
+                                    </h3>
 
-                                {/* Data de apresentação */}
-                                <p className="text-sm text-gray-500 mt-1">
-                                    {new Date(item.dataApresentacao).toLocaleDateString("pt-BR")}
-                                </p>
+                                    {/* Data de apresentação */}
+                                    <p className="text-sm text-gray-500 mt-1">
+                                        {new Date(item.dataApresentacao).toLocaleDateString("pt-BR")}
+                                    </p>
 
-                                {/* Código interno */}
-                                <p className="text-gray-600 mt-1">
-                                    <span className="font-medium">Código Tipo:</span> {item.codTipo}
-                                </p>
+                                    {/* Código interno */}
+                                    <p className="text-gray-600 mt-1">
+                                        <span className="font-medium">Código Tipo:</span> {item.codTipo}
+                                    </p>
 
-                                {/* Ementa */}
-                                <p className="mt-2 text-gray-700">
-                                    <span className="font-medium">Ementa:</span> {item.ementa}
-                                </p>
+                                    {/* Ementa */}
+                                    <p className="mt-2 text-gray-700">
+                                        <span className="font-medium">Ementa:</span> {item.ementa}
+                                    </p>
 
-                                {/* ID técnico */}
-                                <p className="mt-2 text-sm text-gray-400">
-                                    ID da proposição: {item.id}
-                                </p>
-                            </div>
-                        ))}
+                                    {/* ID técnico */}
+                                    <p className="mt-2 text-sm text-gray-400">
+                                        ID da proposição: {item.id}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
                         <div className="flex justify-center items-center gap-4 mt-6">
 
                             {/* Botão anterior */}
@@ -393,20 +516,34 @@ export default function DeputadoDetalhePage() {
                         <h2 className="text-xl font-semibold mb-4">
                             Proposições Dados
                         </h2>
+                        <h3 className="text-lg font-semibold mb-2">
+                            Total de proposições: {proposicaoDadosTotais.total}
+                        </h3>
 
 
 
                         <ResponsiveContainer width="100%" height={500}>
-                            <BarChart data={modoGrafico === "principais" ? dadosPrincipais : dadosDetalhados}>
+                            <BarChart data={modoGrafico === "principais" ? dadosPrincipais : dadosDetalhados}
+                                margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="tipo" />
+                                <XAxis dataKey="tipo"
+                                    angle={-45}
+                                    textAnchor="end"
+                                    interval={0} />
                                 <YAxis />
                                 <Tooltip />
-                                <Bar dataKey="valor" />
+                                <Bar dataKey="valor">
+                                    {dadosGrafico.map((entry, index) => (
+                                        <Cell
+                                            key={`cell-${index}`}
+                                            fill={coresTipos[entry.tipo] || "#6b7280"}
+                                        />
+                                    ))}
+                                </Bar>
                             </BarChart>
                         </ResponsiveContainer>
 
-                        <div className="flex gap-3 mb-4">
+                        <div className="flex gap-5 mb-8 mt-8">
                             <button
                                 onClick={() => setModoGrafico("principais")}
                                 className="px-4 py-2 bg-blue-500 text-white rounded"
@@ -421,6 +558,21 @@ export default function DeputadoDetalhePage() {
                                 Todos os Tipos
                             </button>
                         </div>
+                        <button
+                            onClick={() => setMostrarLegenda(!mostrarLegenda)}
+                            className="mt-4 text-blue-600 hover:underline"
+                        >
+                            {mostrarLegenda ? "Esconder explicação das siglas" : "Ver significado das siglas"}
+                        </button>
+                        {mostrarLegenda && (
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm text-gray-700 mt-4">
+                                {Object.entries(significadoTipos).map(([sigla, significado]) => (
+                                    <p key={sigla}>
+                                        <b>{sigla}</b> — {significado}
+                                    </p>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

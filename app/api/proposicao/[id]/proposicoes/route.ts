@@ -9,19 +9,17 @@ type Params = {
 
 export async function GET(
     request: Request,
-    { params }: Params
+    context: { params: Promise<{ id: string }> }
 ) {
-    try {
-        const { id } = await params;
+    const { id } = await context.params;
 
-        const despesasInfo =
-            await proposicaoService.getProposicaoPorIdDeputado(id);
+    const { searchParams } = new URL(request.url);
+    const pagina = searchParams.get("pagina") || "1";
 
-        return NextResponse.json(despesasInfo);
-    } catch (error) {
-        return NextResponse.json(
-            { error: "Erro ao buscar despesas do deputado" },
-            { status: 500 }
-        );
-    }
+    const data = await proposicaoService.getProposicaoPorIdDeputado(
+        id,
+        Number(pagina)
+    );
+
+    return Response.json(data);
 }
