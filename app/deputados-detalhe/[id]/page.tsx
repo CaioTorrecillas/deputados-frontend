@@ -399,9 +399,9 @@ export default function DeputadoDetalhePage() {
                         <h2 className="text-xl font-semibold mb-4">
                             Despesas do Deputado
                         </h2>
-                        {despesas.map((despesa) => (
+                        {despesas.map((despesa, index) => (
                             <div
-                                key={`${despesa.codDocumento}-${despesa.parcela}`}
+                                key={`${despesa.codDocumento}-${despesa.parcela}-${index}`}
                                 className="border rounded-lg p-4 mb-3 shadow-sm bg-white"
                             >
                                 {/* Tipo da despesa */}

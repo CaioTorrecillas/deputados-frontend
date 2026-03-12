@@ -6,33 +6,31 @@ import { useRouter } from "next/navigation";
 import Footer from "@/app/components/Footer";
 
 export default function ProjetoLeiPage({ ano = "2025" }: { ano?: string }) {
-    const [pagina, setPagina] = useState(1);
+   // const [pagina, setPagina] = useState(1);
     const [dados, setDados] = useState<any[]>([]);
-    const [temProxima, setTemProxima] = useState(true); // controla botão Próxima
+    //const [temProxima, setTemProxima] = useState(true); // controla botão Próxima
     const [carregando, setCarregando] = useState(false);
     const router = useRouter();
+const [anoSelecionado, setAnoSelecionado] = useState(ano);
+   useEffect(() => {
+    const fetchDados = async () => {
+        setCarregando(true);
 
-    useEffect(() => {
-        const fetchDados = async () => {
-            setCarregando(true);
-            try {
-                const res = await fetch(`/api/proposicoes/${ano}?pagina=${pagina}&itens=20`);
-                const data = await res.json();
-                setDados(data || []);
-                console.log("DADOS" + data)
-                // Se a resposta tiver menos itens que o solicitado, significa que não há próxima página
-                setTemProxima(!data.dados || data.dados.length < 20 ? false : true);
-            } catch (err) {
-                console.error("Erro ao buscar proposições:", err);
-                setDados([]);
-                setTemProxima(false);
-            } finally {
-                setCarregando(false);
-            }
-        };
+        try {
+            const res = await fetch(`/api/proposicoes/${anoSelecionado}`);
+            const data = await res.json();
 
-        fetchDados();
-    }, [ano, pagina]);
+            setDados(data || []);
+        } catch (err) {
+            console.error("Erro ao buscar proposições:", err);
+            setDados([]);
+        } finally {
+            setCarregando(false);
+        }
+    };
+
+    fetchDados();
+}, [anoSelecionado]);
 
     return (
         <>
@@ -40,7 +38,21 @@ export default function ProjetoLeiPage({ ano = "2025" }: { ano?: string }) {
 
             <div className="max-w-6xl mx-auto px-4 py-6">
                 <h2 className="text-2xl font-bold text-center mb-2">Projetos de Lei - Ano {ano}</h2>
-                <p className="text-center mb-4">Página {pagina}</p>
+               <div className="flex justify-center gap-2 mb-4">
+  {[2026, 2025, 2024, 2023].map((anoBotao) => (
+    <button
+      key={anoBotao}
+      onClick={() => setAnoSelecionado(String(anoBotao))}
+      className={`px-4 py-2 rounded-md border 
+        ${String(anoBotao) === ano
+          ? "bg-blue-600 text-white"
+          : "bg-white hover:bg-gray-100"
+        }`}
+    >
+      {anoBotao}
+    </button>
+  ))}
+</div>
 
                 {carregando ? (
                     <p className="text-center">Carregando...</p>
@@ -74,7 +86,7 @@ export default function ProjetoLeiPage({ ano = "2025" }: { ano?: string }) {
                                                 : "-"}
                                         </td>
                                         <td className="px-4 py-2">{p.ementa}</td>
-
+                                        <td className="px-4 py-2">{p.resumo IA}</td>
                                         {/* Coluna de ações */}
                                         <td className="px-4 py-2">
                                             <button
@@ -91,24 +103,7 @@ export default function ProjetoLeiPage({ ano = "2025" }: { ano?: string }) {
                     </div>
                 )}
 
-                <div className="flex justify-center gap-4">
-                    <button
-                        onClick={() => setPagina((p) => p - 1)}
-                        disabled={pagina === 1 || carregando}
-                        className={`px-4 py-2 rounded-md text-white ${pagina === 1 || carregando ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
-                            }`}
-                    >
-                        Anterior
-                    </button>
-                    <button
-                        onClick={() => setPagina((p) => p + 1)}
-                        disabled={!temProxima || carregando}
-                        className={`px-4 py-2 rounded-md text-white ${!temProxima || carregando ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
-                            }`}
-                    >
-                        Próxima
-                    </button>
-                </div>
+               
             </div>
             <Footer />
         </>
