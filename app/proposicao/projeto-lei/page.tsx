@@ -86,7 +86,7 @@ const [anoSelecionado, setAnoSelecionado] = useState(ano);
                                                 : "-"}
                                         </td>
                                         <td className="px-4 py-2">{p.ementa}</td>
-                                        <td className="px-4 py-2">{p.resumo IA}</td>
+                                        <td className="px-4 py-2">{p.resumoIA}</td>
                                         {/* Coluna de ações */}
                                         <td className="px-4 py-2">
                                             <button
