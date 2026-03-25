@@ -14,7 +14,7 @@ export default function DeputadosPanel({ uf, deputados, onClose }: Props) {
 
     console.log(uf, deputados)
 
-    const deputadosFiltrados = deputados.filter((dep) => {
+    const deputadosFiltrados = deputados?.filter((dep) => {
         const ufOK = dep.siglaUf === uf;
         const nomeOK = dep.nome.toLowerCase().includes(filtroNome.toLowerCase());
         const partidoOK =

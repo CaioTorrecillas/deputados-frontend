@@ -53,6 +53,12 @@ export default function Sidebar() {
                         </a>
 
                     </li>
+                    <li className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 cursor-pointer transition">
+                        <a href="/admin-page">
+                            {open && <span>Painel do Administrador</span>}
+                        </a>
+
+                    </li>
 
                 </ul>
             </nav>

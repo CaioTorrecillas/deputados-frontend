@@ -28,7 +28,22 @@ class DeputadosService {
 
         return response.json();
     }
+    async syncDeputados(): Promise<string> {
+        const response = await fetch(`${this.URL}/deputados/sincronizar-deputados`, {
+            method: "POST",
+            cache: "no-store"
+        });
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Erro backend:", errorText);
+            throw new Error("Erro ao sincronizar proposições");
+        }
 
+
+        const data = await response.json();
+
+        return data;
+    }
     async getDeputadoById(id: string): Promise<any> {
         const response = await fetch(`${this.URL}/deputados/${id}`, {
             cache: "no-store"

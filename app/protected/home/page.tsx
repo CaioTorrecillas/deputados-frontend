@@ -10,6 +10,7 @@ import Footer from "@/app/components/Footer";
 import Map from "@/app/components/Map";
 import Sidebar from "@/app/components/Sidebar";
 import DeputadosPanel from "@/app/components/DeputadosPanel";
+import DeputadosTooltip from "@/app/components/DeputadosTooltip";
 
 
 
@@ -21,13 +22,27 @@ export default function HomePage() {
     const [modalMessage, setModalMessage] = useState("");
     const [modalType, setModalType] = useState<"success" | "error">("success");
     const [ufSelecionada, setUfSelecionada] = useState<string | null>(null);
+    const [isHoveringMapa, setIsHoveringMapa] = useState(false);
+    const [isHoveringTooltip, setIsHoveringTooltip] = useState(false);
 
+    const [tooltip, setTooltip] = useState({
+        visible: false,
+        x: 0,
+        y: 0,
+        deputados: []
+    });
+
+
+    const handleLeaveEstado = () => {
+        setTooltip(prev => ({ ...prev, visible: false }));
+    };
     useEffect(() => {
+
         async function carregar() {
             try {
                 const response = await fetch("/api/deputados");
                 const data = await response.json();
-                setDeputados(data.dados);
+                setDeputados(data);
                 console.log(data);
 
             } catch (error) {
@@ -40,7 +55,17 @@ export default function HomePage() {
         carregar();
     }, []);
 
+    const handleHoverEstado = (event: any, uf: any) => {
 
+
+        const deputadosDoEstado = deputados.filter(d => d.siglaUf === uf);
+        setTooltip({
+            visible: true,
+            x: event.clientX,
+            y: event.clientY,
+            deputados: deputadosDoEstado
+        });
+    };
 
     function handleFavoriteResult(success: boolean, message?: string) {
         setModalMessage(
@@ -68,77 +93,26 @@ export default function HomePage() {
                             <h1 className="text-3xl font-bold mb-6 text-center">
                                 Deputados
                             </h1>
-                            <Map setUfSelecionada={setUfSelecionada} />
-                            <DeputadosPanel 
-                            uf={ufSelecionada} 
-                            deputados={deputados} 
-                            onClose={() => setUfSelecionada(null)} />
-                            {/* 🔎 Barra de busca */}
-                            {/*<div className="flex flex-col sm:flex-row gap-4 mb-8">
-                        <input
-                            type="text"
-                            placeholder="Buscar por nome..."
-                            value={filtroNome}
-                            onChange={(e) => setFiltroNome(e.target.value)}
-                            className="flex-1 p-2 border rounded"
-                        />
+                            <Map setUfSelecionada={setUfSelecionada}
+                                onHoverEstado={handleHoverEstado}
+                                onLeaveEstado={handleLeaveEstado} />
+                            <DeputadosPanel
+                                uf={ufSelecionada}
+                                deputados={deputados}
+                                onClose={() => setUfSelecionada(null)} />
 
-                        <select
-                            value={filtroUF}
-                            onChange={(e) => setFiltroUF(e.target.value)}
-                            className="p-2 border rounded w-40"
-                        >
-                            <option value="">Todos os Estados</option>
-                            {[
-                                "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT",
-                                "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO",
-                                "RR", "SC", "SP", "SE", "TO"
-                            ].map((uf) => (
-                                <option key={uf} value={uf}>{uf}</option>
-                            ))}
-                        </select>
-                        <select
-                            value={filtroPartido}
-                            onChange={(e) => setFiltroPartido(e.target.value)}
-                            className="p-2 border rounded w-40"
-                        >
-                            <option value="">Todos os Partidos</option>
-                            {Array.from(new Set(deputados.map((d) => d.siglaPartido)))
-                                .sort()
-                                .map((partido) => (
-                                    <option key={partido} value={partido}>
-                                        {partido}
-                                    </option>
-                                ))}
-                        </select>
-                    </div>*/}
-
-                            {/* 🟦 Grid dos deputados */}
-                            {/*<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        {deputadosFiltrados.map((dep) => (
-                            <DeputadosCard
-                                key={dep.id}
-                                id={dep.id}
-                                nome={dep.nome}
-                                siglaPartido={dep.siglaPartido}
-                                siglaUf={dep.siglaUf}
-                                urlFoto={dep.urlFoto ?? ""}
-                                onFavoriteResult={handleFavoriteResult}
-
+                            <DeputadosTooltip
+                                visible={tooltip.visible}
+                                x={tooltip.x}
+                                y={tooltip.y}
+                                deputados={tooltip.deputados}
                             />
-                        ))}
-                    </div>*/}
-                            <Modal
-                                open={modalOpen}
-                                title="Ação concluída"
-                                message={modalMessage}
-                                type={modalType}
-                                onClose={() => setModalOpen(false)}
-                            />
+
                         </div>
                     </div>
                 </div>
             </div>
+
             <Footer />
 
         </>

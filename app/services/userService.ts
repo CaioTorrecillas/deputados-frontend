@@ -13,6 +13,7 @@ class UserService {
             throw new Error("Erro ao buscar usuarios");
         }
 
+
         return response.json();
     }
     async saveUser(user: Request): Promise<User> {

@@ -125,6 +125,7 @@ export default function DeputadoDetalhePage() {
     const [paginaProposicoes, setPaginaProposicoes] = useState(1);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<"gerais" | "despesas" | "proposicoes" | "proposicoesDT">("gerais");
+    const [tipoFiltro, setTipoFiltro] = useState("");
     useEffect(() => {
         /*if (activeTab === "proposicoes") {
             fetch(`/api/proposicao/${id}/proposicoes?pagina=${paginaProposicoes}`)
@@ -190,24 +191,27 @@ export default function DeputadoDetalhePage() {
     }, [id]);
 
     useEffect(() => {
-        console.log(`Mudando de pagina. Pagina:   ${paginaProposicoes}`);
         if (activeTab !== "proposicoes") return;
 
         async function fetchProposicoes() {
             try {
-                const response = await fetch(
-                    `/api/proposicao/${id}/proposicoes?pagina=${paginaProposicoes}`
-                );
+                let url = `/api/proposicao/${id}/proposicoes?pagina=${paginaProposicoes}`;
 
+                if (tipoFiltro) {
+                    url += `&tipo=${tipoFiltro}`;
+                }
+
+                const response = await fetch(url);
                 const data = await response.json();
-                setProposicao(data);
+
+                setProposicao(data.dados);
             } catch (error) {
                 console.error(error);
             }
         }
 
         fetchProposicoes();
-    }, [id, paginaProposicoes, activeTab]);
+    }, [id, paginaProposicoes, activeTab, tipoFiltro]);
 
 
     if (loading) {
@@ -451,9 +455,25 @@ export default function DeputadoDetalhePage() {
                         <h2 className="text-xl font-semibold mb-4">
                             Proposições do Deputado
                         </h2>
+                        <div className="flex gap-4 mb-4">
+                            <select
+                                value={tipoFiltro}
+                                onChange={(e) => {
+                                    setTipoFiltro(e.target.value);
+                                    setPaginaProposicoes(1); // resetar pagina
+                                }}
+                                className="border p-2 rounded"
+                            >
+
+                                <option value="PL">Projeto de Lei (PL) 2025</option>
+                                <option value="PEC" disabled>PEC (to do)</option>
+                                <option value="REQ" disabled>Requerimento(to do)</option>
+                                <option value="EMC" disabled>Emenda de Comissão(to do)</option>
+                            </select>
+                        </div>
                         <div className="max-h-[500px] overflow-y-auto border rounded p-3">
 
-                            {proposicao?.dados?.map((item) => (
+                            {proposicao?.map((item) => (
                                 <div
                                     key={item.id}
                                     className="border rounded-lg p-4 mb-3 shadow-sm bg-white"

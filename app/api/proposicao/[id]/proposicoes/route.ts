@@ -15,10 +15,13 @@ export async function GET(
 
     const { searchParams } = new URL(request.url);
     const pagina = searchParams.get("pagina") || "1";
+    const tipo = searchParams.get("tipo") || undefined;
 
     const data = await proposicaoService.getProposicaoPorIdDeputado(
         id,
-        Number(pagina)
+        Number(pagina),
+        tipo
+
     );
 
     return Response.json(data);

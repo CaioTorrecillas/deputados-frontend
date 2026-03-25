@@ -4,10 +4,13 @@ import { useState } from "react";
 type MapProps = {
 
     setUfSelecionada: any;
+    onHoverEstado: (event: React.MouseEvent, uf: string) => void;
+    onLeaveEstado: () => void;
 };
-const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
+const Map: React.FC<MapProps> = ({ setUfSelecionada, onHoverEstado, onLeaveEstado }) => {
 
     const [houverUF, setHoverUF] = useState<string | null>(null);
+
 
 
     return (
@@ -21,6 +24,8 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 id="AC"
                 fill="#9790EE"
                 stroke="#FFF"
+                onMouseEnter={(e) => onHoverEstado(e, "AC")}
+                onMouseLeave={onLeaveEstado}
                 className={`
   cursor-pointer transition
   ${setUfSelecionada === "AC" ? "fill-blue-600" : "fill-gray-300 hover:fill-blue-400"}
@@ -30,9 +35,12 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("AC")}
             ></path>
+            <text x="30" y="230">AC</text>
             <path
                 id="AL"
                 fill="#9790EE"
+                onMouseEnter={(e) => onHoverEstado(e, "AL")}
+                onMouseLeave={onLeaveEstado}
                 stroke="#FFF"
                 className={`
   cursor-pointer transition
@@ -43,9 +51,12 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("AL")}
             ></path>
+            <text x="595" y="240">AL</text>
             <path
                 id="AM"
                 fill="#9790EE"
+                onMouseEnter={(e) => onHoverEstado(e, "AM")}
+                onMouseLeave={onLeaveEstado}
                 stroke="#FFF"
                 className={`
   cursor-pointer transition
@@ -56,8 +67,11 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("AM")}
             ></path>
+            <text x="120" y="150">AM</text>
             <path
                 id="AP"
+                onMouseEnter={(e) => onHoverEstado(e, "AP")}
+                onMouseLeave={onLeaveEstado}
                 fill="#9790EE"
                 stroke="#FFF"
                 className={`
@@ -70,9 +84,12 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
 
                 onClick={() => setUfSelecionada("AP")}
             ></path>
+            <text x="330" y="70">AP</text>
             <path
                 id="BA"
                 fill="#9790EE"
+                onMouseEnter={(e) => onHoverEstado(e, "BA")}
+                onMouseLeave={onLeaveEstado}
                 stroke="#FFF"
                 className={`
   cursor-pointer transition
@@ -83,10 +100,12 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("BA")}
             ></path>
-         
+            <text x="500" y="280">BA</text>
             <path
                 id="CE"
                 fill="#9790EE"
+                onMouseEnter={(e) => onHoverEstado(e, "CE")}
+                onMouseLeave={onLeaveEstado}
                 stroke="#FFF"
                 className={`
   cursor-pointer transition
@@ -97,11 +116,13 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("CE")}
             ></path>
-
+            <text x="530" y="160">CE</text>
             <path
                 id="DF"
                 fill="#9790EE"
                 stroke="#FFF"
+                onMouseEnter={(e) => onHoverEstado(e, "DF")}
+                onMouseLeave={onLeaveEstado}
                 className={`
   cursor-pointer transition
   ${setUfSelecionada === "DF" ? "fill-blue-600" : "fill-gray-300 hover:fill-blue-400"}
@@ -114,6 +135,8 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
             <path
                 id="ES"
                 fill="#9790EE"
+                onMouseEnter={(e) => onHoverEstado(e, "ES")}
+                onMouseLeave={onLeaveEstado}
                 stroke="#FFF"
                 className={`
   cursor-pointer transition
@@ -124,11 +147,15 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("ES")}
             ></path>
+            <text x="540" y="410">ES</text>
+
             <path
                 id="GO"
                 fill="#9790EE"
                 stroke="#FFF"
                 strokeWidth="1.211"
+                onMouseEnter={(e) => onHoverEstado(e, "GO")}
+                onMouseLeave={onLeaveEstado}
                 className={`
   cursor-pointer transition
   ${setUfSelecionada === "GO" ? "fill-blue-600" : "fill-gray-300 hover:fill-blue-400"}
@@ -137,10 +164,13 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("GO")}
             ></path>
+            <text x="370" y="345">GO</text>
             <path
                 id="MA"
                 fill="#9790EE"
                 stroke="#FFF"
+                onMouseEnter={(e) => onHoverEstado(e, "MA")}
+                onMouseLeave={onLeaveEstado}
                 strokeWidth="1.211"
                 className={`
   cursor-pointer transition
@@ -150,10 +180,13 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("MA")}
             ></path>
+            <text x="440" y="160">MA</text>
             <path
                 id="MG"
                 fill="#9790EE"
                 stroke="#FFF"
+                onMouseEnter={(e) => onHoverEstado(e, "MG")}
+                onMouseLeave={onLeaveEstado}
                 className={`
   cursor-pointer transition
   ${setUfSelecionada === "MG" ? "fill-blue-600" : "fill-gray-300 hover:fill-blue-400"}
@@ -163,9 +196,12 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("MG")}
             ></path>
+            <text x="450" y="390">MG</text>
             <path
                 id="MS"
                 fill="#9790EE"
+                onMouseEnter={(e) => onHoverEstado(e, "MS")}
+                onMouseLeave={onLeaveEstado}
                 stroke="#FFF"
                 className={`
   cursor-pointer transition
@@ -176,9 +212,12 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("MS")}
             ></path>
+            <text x="290" y="410">MS</text>
             <path
                 id="MT"
                 fill="#9790EE"
+                onMouseEnter={(e) => onHoverEstado(e, "MT")}
+                onMouseLeave={onLeaveEstado}
                 stroke="#FFF"
                 className={`
   cursor-pointer transition
@@ -189,10 +228,14 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("MT")}
             ></path>
+            <text x="290" y="300">MT</text>
+
             <path
                 id="PA"
                 fill="#9790EE"
                 stroke="#FFF"
+                onMouseEnter={(e) => onHoverEstado(e, "PA")}
+                onMouseLeave={onLeaveEstado}
                 className={`
   cursor-pointer transition
   ${setUfSelecionada === "PA" ? "fill-blue-600" : "fill-gray-300 hover:fill-blue-400"}
@@ -201,10 +244,15 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 d="m371.293 235.501-62.97-3.48-34.04-2.42-3.69-1.49-1.37.45-.35-.31-.2-1.09-.55-.72-1.63-.45-.82.17-.95-.39-.23-.5.04-1.1-.23-.94-3.38-1.7-3-2.76-1.54-1.11-.72-2.2-.48-2.39.23-2.44-.77-1.63-1.33-1.93-1.37-3.95-.39-1.76-2.45-4.06-1.18-1.08-.57-.56-.15-1.96-.64-1.26-1.59-1.56-1.07-.58-.37-.57-.83-2.34.03-1.13.58-.97 1.45-1.13.78-1.31 29.9-64.24-1.81-1.67.13-.78-.19-.48-1.39.35-.85.61-1.87-.78-1.1-2.17-2.69-1.45-1.27-1.34-.08-.6-1.32-.82-1.37-.15-2.25-.65-2.38-1.31-1.88-.67-1.35-1.09-.63-.9-4.58-2.54-4.64-3.77-.3-.44-.04-.93-.55-1.83-1.84-1.23-.7.19-.36-.2-1.83-1.98.05-2.11.35-.69-.18-.41-1.69-.85-.24-.68-.18-2.27.43-1.45-.4-4.86-1.59-16.97.75.32.43.58-.02.48.45.4.92.28 1.37-.71.47-.81 2.71.23.81-1.05-.54-1.81 1.79-.36 1.41-1.63 2.64 1.01 1.88.03.54-1.52 3.33-1.62 1.97.39 1.16-.11.49-.25 1.2-1.48.4-1.4 1.46-1.1.86-.11.65.46 2.11-1.13.41.11.37.99.73.45 2.03.48 1.61.25.56-.6 1.67-.39.78.28.82-.01.86-.34 2.24.3 4.67 1.38.96-.14 1-.87-.03-2.28-2.07-2.5-1.24-.63.49-1.68 1.31-1.45.28-1.11.31-.17.71.19.83.76 2.35 1.11 11.62-2.33 1.57 1.69 1.02.06.44-.29.62.57.37 2.3-.62 1.3-.25 4.54.24 1.44.31.54 1.17.02 1.08-.29 3.39.37 1.29.49 1.93 1.05.67.8.49 1.28 1.19.12 1.14.84.8.98.84.27 1.33-.14.38-.42.94-.14 2.84 2.66.68-.03.49 1.18-.68.23-.19.72.76 2.83 2.02 2.26 2.57.73.17.33-.43 3.14.19 2.11.67 1.51.62.56.59 1.81-.13 1.58 1.5 3.48.82.19.78-.36 2.93 3.28-.08 2.43.41.94.95.19.33.47.31 1.58-.21.69.11 1.3 1.87 1.39.43 1.5 1.45 1.03 2.79.68 1.3-.12.77-.34.94.06-.53.74.29 1.59-.17.53-1.29 1.11-1.39.17-.5-.18-.84-.79-.66-.15-3.38 1.58-.37.54-1.6.72-.63-.02-1.55.59.04.58 6.46-1.06.88.66.13.46v.66l-.62.5.3.36.63-.2.86-1 1.02-.01.53-.27.6.12 1.07-.42 1.14-.57 3.28-2.34 1.5-.35 1.84-.81 3.16-1.84.54-1 .67-.52 2.09-1.01.66-.72-.25-.67.21-.41 1.13-.28 1.09.06.41.21.38 3.8-.52 2.58.33 1.62.81 1.6 1.31 1.35.3 1.64-.12.47-1.84 1.84-.47.13-.87-.52-1.82-.52-1.26-.31-.93.14-2.13-1.04-.26-1.12-.88-.53-2.28 3.82-.61 2.37.68 2.97.48.64.92.62-1.01-1.14-.43-2.69.12-.52 2.57-4.22 2.31 1.18.11.45 2.53 2.45-.25 2.02-.74.55.4 2.33.52 1.13 1.12.75.74.15.52.49-.34-.64-.77-.24-1.2-1.04-.22-.68.34-4.2.82-1.19 1.43.73.83 1.2-.09.79 1.2.86.25-.29-1-1.26-.92-2.1v-.44l2.26-2.32 1.62.09 1.93.64.34.56-.61.59.32.28.48.03 1.03-.17 1.33-.9 4.09-.96.77.2 1.74 1.06 3.17-.42 1.07-.41 1.02-1.01.98-.59 1.74-.51.77.07.06.75-2.04 4.02-.24 1.5-.46 1.07-.83 1.03-.01.88.58 1.42-.32 2.47.88-1.19.01-1.4 1.54-3 1.13-3.19 1.12-1.56.27-.27.76-.05.58-.35 1.82-.23.88-1.35 1.51-1.69 1.36-2.26.52-.46.79.49.62-.46 1.62 2.34 1.19.59-.05-.74-.35-.75.62-1.01 3.51-.51-1.03-.32-3.51.46-.31-.21.29-2.43.51-.29.67.38 1.02.11 1.07-3.1-.68-1.39.03-.68 1.17-1.81 2.84-2.48.36-.08 1.11 1.14 2.93-2.09.46-.07.4.45.1.57-.32.67 1.07-.16.81-.58.36-.78.63-.19.28.15.74 1.39 1.33 1.2.2-.56-.11-.38-.96-.49-.14-.29-.13-1.2.17-.42.44-.19 2.28.26 1.18.65.62 1.02 1.63.71 1.65-.78.53 2.14-.5.31-.03.59.92-.52 1.16-2.35.38.23-.23 1.33.41.44 2.51-.26.45.65.46 1.68-.6.95.85-.5.26.37 1.89.14 3.53-1.24-.31 1.58-.75 1.83 1.47-.49.59-.62.63 1.62-.77.45-.47 1.03.16 1.38-.71 4.39-.57.74-1.14.15-.05.62.27.49.99-.16.43.53-.08 1.61-.9 3.02-.36.71-1.74 1.57-.5 2.38.13 1.64-3.68 3.09 1.04 1.58-.79.81.18 1.82-.46 1.28-.83 1.45-1.48 1.76-1.96 1.54-1.6 4.69-.29 1.9-.47 1.21-2.44 2.32-1.12.46-.62 2.88-1.55 1.17-.43 1.15-1.55 2.17-1.17.92-2.35-.23-14.71 11.83.49.08 2.29.81 1.87-.24 1.29.12 1.02 1.66.39.31.87.14 1.26 1.17-.04.63-.37.67-.72.37-.97.07-.29.28.09 1.41 1.01 1.34-.92 2.75-.64.48-1.46.46-.25.46.29 1.2-.19 1.34-1.3.15-1.51 1.34-.85 1.27.15 1.51-.24.5-2.5 1.2-3.41 1.14-2.47 1.78-.19.35.43 2.19.06 2.67-1.28 2.1-1.41 1.68-.15.57.17.88.59.96 1.67 1.74.75.32.15.3-.66 4.04-1.76 5.15-1.08.81-1.7 3.24-.18.99-.94 1.54-.74.85-1.05.16-1.37.92-1.03 1.92-1.21 1.68-1.18 1.09-1.15 1.58-1.13 4.46zm21.16-130.31-4.52 1.96-3.39.52-2.02-.31-.65 1.13-1.84 1.19-.72-.61-.61-1.53-.23.28.42 1.23-.34.81-.71.41-3.77-1.64-.8.72-4.19 1.26-3.2-.57-.81-.61-.24-1.85-.23-.41-1.11-1.02-1.06-1.6-.21-1.78.52-2.75.62-.38 1.76.36.93-.75.08-.56-1.3.43-1.22-.13-.94-.71-.18-1.05.34-5.08.73-.76.35.75 1.76.6.55-.06-.46-.42-1.27-.22-.9-2.16.36-1.68.89-1.97 1.33-1.33.96-.57 1.34-.49 1.32-.13 3.46.52 7.21 1.77 3.7-.46.11-.3 1.14-.62 2.16-.37 2.89.29 2.8.82 6.48.85.63.47-.05 1.23-.7.74-.68 1.5-.36 2.65-.86 3.3-1.29.68-.35.69.23 1.19-1.98 2.58-1.39 3.5zm-47.21-.17-.75-.51 1.1-2.25-.09-1.79.25-.21 2.33-.48.9-.86.15-.5-.2-2.34.86-2.58 1.26-1.49 2.29-1.47 2.87-.2.72 2.36-1.1 2.19-.85 3.04-1.1.67-1.34 2.03-.78.72-4.94 3.31zm28.48-22.9-1.03-.25-2.45.08-.79-.16-.29-.26-.38-1.09.01-1.24 1.51-.42 1.89.04 2.19-1.29 4.81-.6.77.26.68.68-.18 1.02-2.56 1.39-1.78 2.48-1.1.5zm4.79 0 1.86-1.2 1.98.03 1.65.62.53.99.05.62-.88.77-2.85.28-1.17.32-2.26-.89-.2-.53zm-16.98 4.39-.5-.26-.61.04-1.54-.69.21-1.16.64-.92 1.92-.4 2.36-.9 1.32.08.8.68.09.13-1.93 1.61-1.07.34zm9.42-9.69-.82-.3-.17-1.66.15-.6 1.17-1.31 2.45-.92.25.12.53.68.04.89-1.95 1.99zm-13.83 20.22-.14-.41.19-.93 1.04-2.81 2.59-1.69.72-.28.69.14-.16 1.79-1.56.44-1.62 2.19zm10.91-17.57-1.19-.31-.3-.48.88-.96.71-3.95.89-1.23.29.13.07.32-.02 2.48.6 1.87-.32.88-1.03.4zm-14.81 10.19-.27-.19.12-.61.55-.36 1.19-1.71.76-1.54.73-.66 1.45-.54-.2 1.49-.4 1-1.72 1.66zm13.87-7.03-.6-.15-.84-.71-.96-1.64-.05-.38.23-.29.81-.58 1.85.84.29.43.24 2.09zm-5.38 30.56-.65-.11-.88-.52-.69.46-.75-.28-1.68-1.74v-.61l1.28-.01 3.06 1.32zm-21.15-5.54.04-1.03-.2-.3.6-.99 2.36-.88.78.38.87.86-.29.35-1.03.47-2.54.41zm12.7-6.69-.18-.03.01-.35.54-.94 1.79-1.62.42-1.24.05-1.3.24-.3.32.44v1.51l-.89 2.73-.62.65zm6.3-9.9 1.65-2.96.88-.21.71.19.27.87-.58.71zm31.42 18.97-.84-.35-.34-1.06 1.04-1.72 1.07-.33.19.1-.02.74-.74 2.24zm-33.48-19.47-.54-.2.32-2.04 1.33-1.81.23.04 1.29.88-.01.25-1.55.64zm2.23 5.03.72.03-.4.45-.94.31-.11 1.12-.79.71-1.69.84-.16-.18.27-.83.47-.63 1.73-1.67zm-22.56 10.21-.55-.19-.07-.35.43-.4 3.56-1.6.54.7-.01.2-1.4.73zm63.53-4.78-1.03-.19-.82-.79.87-1.25 1.34-.01.19 1.19-.1.59zm-37.25-18.9-2.36.7-.59.01-.18-.21 1.03-1.04 1.04-.51 1.04.17.44.34.15.23-.15.21zm-5.27 8.59-.08-.76.25-.5 2.48-1.46-.9 2-.81.63zm2.14 4.53-.45-.12-.07-.23.78-1.5 1.19.02-.12 1.35zm28.04 15.83-.28-.23.9-1.6.68-.4.23.75.51.37-.26.52-.43.34-.63-.18zm-26.66-23.32-.89-.07.02-.19 2.36-1.84.04.96-.23.63-.25.34zm67.46 10.22-.38-.53.19-.76 1.02-.91.25.15.23 1.75z"
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("PA")}
+
             ></path>
+            <text x="320" y="150">PA</text>
+
             <path
                 id="PB"
                 fill="#9790EE"
+                onMouseEnter={(e) => onHoverEstado(e, "PB")}
+                onMouseLeave={onLeaveEstado}
                 className={`
   cursor-pointer transition
   ${setUfSelecionada === "PB" ? "fill-blue-600" : "fill-gray-300 hover:fill-blue-400"}
@@ -215,10 +263,14 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("PB")}
             ></path>
+            <text fontSize={12} x="580" y="200">PB</text>
+
             <path
                 id="PE"
                 fill="#9790EE"
                 stroke="#FFF"
+                onMouseEnter={(e) => onHoverEstado(e, "PE")}
+                onMouseLeave={onLeaveEstado}
                 className={`
   cursor-pointer transition
   ${setUfSelecionada === "PE" ? "fill-blue-600" : "fill-gray-300 hover:fill-blue-400"}
@@ -228,10 +280,13 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("PE")}
             ></path>
+            <text x="550" y="217">PE</text>
             <path
                 id="PI"
                 fill="#9790EE"
                 stroke="#FFF"
+                onMouseEnter={(e) => onHoverEstado(e, "PI")}
+                onMouseLeave={onLeaveEstado}
                 className={`
   cursor-pointer transition
   ${setUfSelecionada === "PI" ? "fill-blue-600" : "fill-gray-300 hover:fill-blue-400"}
@@ -241,9 +296,12 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("PI")}
             ></path>
+            <text x="490" y="210">PI</text>
             <path
                 id="PR"
                 fill="#9790EE"
+                onMouseEnter={(e) => onHoverEstado(e, "PR")}
+                onMouseLeave={onLeaveEstado}
                 stroke="#FFF"
                 className={`
   cursor-pointer transition
@@ -254,9 +312,12 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("PR")}
             ></path>
+            <text x="330" y="480">PR</text>
             <path
                 id="RJ"
                 fill="#9790EE"
+                onMouseEnter={(e) => onHoverEstado(e, "RJ")}
+                onMouseLeave={onLeaveEstado}
                 stroke="#FFF"
                 className={`
   cursor-pointer transition
@@ -267,9 +328,12 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("RJ")}
             ></path>
+            <text x="500" y="460">RJ</text>
             <path
                 id="RN"
                 fill="#9790EE"
+                onMouseEnter={(e) => onHoverEstado(e, "RN")}
+                onMouseLeave={onLeaveEstado}
                 className={`
   cursor-pointer transition
   ${setUfSelecionada === "RN" ? "fill-blue-600" : "fill-gray-300 hover:fill-blue-400"}
@@ -280,9 +344,12 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("RN")}
             ></path>
+            <text x="580" y="175">RN</text>
             <path
                 id="RO"
                 fill="#9790EE"
+                onMouseEnter={(e) => onHoverEstado(e, "RO")}
+                onMouseLeave={onLeaveEstado}
                 className={`
   cursor-pointer transition
   ${setUfSelecionada === "RO" ? "fill-blue-600" : "fill-gray-300 hover:fill-blue-400"}
@@ -293,9 +360,12 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("RO")}
             ></path>
+            <text x="160" y="250">RO</text>
             <path
                 id="RR"
                 fill="#9790EE"
+                onMouseEnter={(e) => onHoverEstado(e, "RR")}
+                onMouseLeave={onLeaveEstado}
                 className={`
   cursor-pointer transition
   ${setUfSelecionada === "RR" ? "fill-blue-600" : "fill-gray-300 hover:fill-blue-400"}
@@ -306,8 +376,11 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("RR")}
             ></path>
+            <text x="190" y="60">RR</text>
             <path
                 id="RS"
+                onMouseEnter={(e) => onHoverEstado(e, "RS")}
+                onMouseLeave={onLeaveEstado}
                 fill="#9790EE"
                 className={`
   cursor-pointer transition
@@ -319,9 +392,12 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("RS")}
             ></path>
+            <text x="310" y="570">RS</text>
             <path
                 id="SC"
                 fill="#9790EE"
+                onMouseEnter={(e) => onHoverEstado(e, "SC")}
+                onMouseLeave={onLeaveEstado}
                 stroke="#FFF"
                 strokeWidth="1.211"
                 className={`
@@ -332,9 +408,12 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("SC")}
             ></path>
+            <text x="400" y="525">SC</text>
             <path
                 id="SE"
                 fill="#9790EE"
+                onMouseEnter={(e) => onHoverEstado(e, "SE")}
+                onMouseLeave={onLeaveEstado}
                 stroke="#FFF"
                 strokeWidth="1.211"
                 className={`
@@ -345,10 +424,12 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("SE")}
             ></path>
-         <text x="580" y="270">SE</text>
+            <text x="580" y="270">SE</text>
             <path
                 id="SP"
                 fill="#9790EE"
+                onMouseEnter={(e) => onHoverEstado(e, "SP")}
+                onMouseLeave={onLeaveEstado}
                 className={`
   cursor-pointer transition
   ${setUfSelecionada === "SP" ? "fill-blue-600" : "fill-gray-300 hover:fill-blue-400"}
@@ -359,14 +440,16 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("SP")}
             ></path>
-               <text x="390" y="452">SP</text>
+            <text x="380" y="442">SP</text>
             <path
                 id="TO"
                 fill="#9790EE"
+
+                onMouseEnter={(e) => onHoverEstado(e, "TO")}
+                onMouseLeave={onLeaveEstado}
                 stroke="#FFF"
                 strokeWidth="1.211"
-                onMouseEnter={() => setHoverUF("SP")}
-                onMouseLeave={() => setHoverUF(null)}
+
                 className={`
   cursor-pointer transition
   ${setUfSelecionada === "TO" ? "fill-blue-600" : "fill-gray-300 hover:fill-blue-400"}
@@ -375,6 +458,7 @@ const Map: React.FC<MapProps> = ({ setUfSelecionada }) => {
                 data-stroke-width="1"
                 onClick={() => setUfSelecionada("TO")}
             ></path>
+            <text x="390" y="245">TO</text>
         </svg>
     )
 };
