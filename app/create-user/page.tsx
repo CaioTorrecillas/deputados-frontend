@@ -35,7 +35,7 @@ export default function CreatePage() {
 
     return (
         <>
-            <Navbar />
+           
 
             <div className="mt-24 px-6 flex justify-center">
                 <form

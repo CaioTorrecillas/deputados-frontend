@@ -57,7 +57,7 @@ export default function DeputadosPage() {
     }
     return (
         <>
-            <Navbar />
+         
 
             {/* Container da página */}
             <div className="mt-24 px-6 flex justify-center">
@@ -129,7 +129,7 @@ export default function DeputadosPage() {
                     />
                 </div>
             </div>
-            <Footer />
+            
 
         </>
     )

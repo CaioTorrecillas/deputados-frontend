@@ -124,8 +124,10 @@ export default function DeputadoDetalhePage() {
     const [proposicaoDadosTotais, setProposicaoDadosTotais] = useState<any[]>([]);
     const [paginaProposicoes, setPaginaProposicoes] = useState(1);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<"gerais" | "despesas" | "proposicoes" | "proposicoesDT">("gerais");
+    const [activeTab, setActiveTab] = useState<"gerais" | "despesas" | "proposicoes" | "proposicoesDT" | "atividades">("gerais");
     const [tipoFiltro, setTipoFiltro] = useState("");
+    const [atividades, setAtividades] = useState<any[]>([]);
+
     useEffect(() => {
         /*if (activeTab === "proposicoes") {
             fetch(`/api/proposicao/${id}/proposicoes?pagina=${paginaProposicoes}`)
@@ -172,6 +174,23 @@ export default function DeputadoDetalhePage() {
 
         fetchDespesas();
     }, [id, activeTab]);
+
+    useEffect(() => {
+        if (activeTab !== "atividades") return;
+
+        async function fetchAtividades() {
+            try {
+                const response = await fetch(`/api/atividades/deputado/${id}`);
+                const data = await response.json();
+
+                setAtividades(data);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        fetchAtividades();
+    }, [activeTab, id]);
 
     useEffect(() => {
         async function fetchDadosTotais() {
@@ -240,7 +259,7 @@ export default function DeputadoDetalhePage() {
     return (
 
         <>
-            <Navbar />
+
 
 
             <div className="max-w-5xl mx-auto p-6 space-y-6">
@@ -315,6 +334,15 @@ export default function DeputadoDetalhePage() {
                             }`}
                     >
                         Proposições Dados
+                    </button>
+                    <button
+                        onClick={() => setActiveTab("atividades")}
+                        className={`pb-3 font-medium ${activeTab === "atividades"
+                            ? "border-b-2 border-blue-600 text-blue-600"
+                            : "text-gray-500"
+                            }`}
+                    >
+                        Atividades
                     </button>
                 </div>
 
@@ -450,6 +478,42 @@ export default function DeputadoDetalhePage() {
                         ))}
                     </div>
                 )}
+                {activeTab === "atividades" && (
+                    <div className="bg-white rounded-lg shadow p-6">
+                        <h2 className="text-xl font-semibold mb-4">
+                            Atividades do Deputado
+                        </h2>
+
+                        {atividades.map((atividade, index) => (
+                            <div
+                                key={`${atividade.id}-${atividade.referenciaId}-${index}`}
+                                className="border rounded-lg p-4 mb-3 shadow-sm bg-white"
+                            >
+                                {/* 🧠 Descrição */}
+                                <h3 className="font-semibold text-lg text-gray-800">
+                                    Descrição da votação: <span className="font-medium">{atividade.descricao}</span> 
+                                </h3>
+
+                                {/* 📅 Data */}
+                                <p className="text-sm text-gray-500 mt-1">
+                                    Data da votação: {new Date(atividade.dataAtividade).toLocaleDateString("pt-BR")}
+                                </p>
+
+                                {/* 🏷 Tipo */}
+                                <p className="text-gray-600 mt-2">
+                                    <span className="font-medium">Tipo:</span> {atividade.tipo}
+                                </p>
+
+                                {/* 🧩 Referência (se existir) */}
+                                {atividade.referenciaId && (
+                                    <p className="text-gray-500 text-sm mt-1">
+                                        Ref: {atividade.referenciaId}
+                                    </p>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                )}
                 {activeTab === "proposicoes" && (
                     <div className="bg-white rounded-lg shadow p-6">
                         <h2 className="text-xl font-semibold mb-4">
@@ -469,6 +533,7 @@ export default function DeputadoDetalhePage() {
                                 <option value="PEC" disabled>PEC (to do)</option>
                                 <option value="REQ" disabled>Requerimento(to do)</option>
                                 <option value="EMC" disabled>Emenda de Comissão(to do)</option>
+
                             </select>
                         </div>
                         <div className="max-h-[500px] overflow-y-auto border rounded p-3">
@@ -596,7 +661,7 @@ export default function DeputadoDetalhePage() {
                     </div>
                 )}
             </div>
-            <Footer />
+
 
         </>
     );

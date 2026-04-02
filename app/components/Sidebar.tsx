@@ -43,8 +43,10 @@ export default function Sidebar() {
                 <ul className="space-y-2 px-2">
 
                     <li className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 cursor-pointer transition">
-
-                        {open && <span>Meus Deputados</span>}
+                        <a href="/user-deputados">
+                          {open && <span>Meus Deputados</span>}
+                        </a>
+                      
                     </li>
 
                     <li className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 cursor-pointer transition">

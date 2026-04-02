@@ -80,7 +80,7 @@ export default function HomePage() {
     }
     return (
         <>
-            <Navbar />
+           
 
             <div className="flex">
 
@@ -113,7 +113,7 @@ export default function HomePage() {
                 </div>
             </div>
 
-            <Footer />
+         
 
         </>
     )
